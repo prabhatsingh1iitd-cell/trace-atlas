@@ -1,4 +1,4 @@
-"""Validate submitted results, optionally reconcile to the supplied Parquet."""
+"""Validate exported results, optionally reconcile to the supplied Parquet."""
 
 import argparse
 import json
@@ -230,7 +230,7 @@ def validate(output, dataset=None):
                 if values:
                     assert actual["p50"] == median(values)
                     assert math.isclose(actual["mean"], sum(values) / len(values))
-        # Verify submitted excerpts against the original source record itself.
+        # Verify exported excerpts against the original source record itself.
         from data import text_content, excerpt
 
         examples = {}

@@ -1,4 +1,4 @@
-"""Only the assessment GLM endpoint is permitted; logs contain no trace content."""
+"""Hyde GLM provider adapter; logs contain no trace content."""
 
 import asyncio
 import hashlib

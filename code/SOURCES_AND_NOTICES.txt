@@ -1,6 +1,13 @@
-PUBLIC DATA SOURCES AND NOTICES
-Derived assessment data; sources are not necessarily production traffic.
-Some upstream permissions are unresolved. This local build is for organizer review; do not redistribute until those source permissions are resolved.
+DATA PROVENANCE AND REDISTRIBUTION
+
+The public demo in demo/ is newly authored synthetic data. It contains no records,
+excerpts or identifiers from the external datasets below. Its counters and labels
+are illustrative and do not measure model quality or real production usage.
+
+The following notices are retained for the historical external datasets used during
+development. Those datasets and their derived exports are NOT distributed in this
+repository. Some upstream permissions remain unresolved; do not redistribute those
+materials without resolving the relevant source permissions.
 
 Exgentic/agent-llm-traces-v2
 https://huggingface.co/datasets/Exgentic/agent-llm-traces-v2
@@ -34,4 +41,4 @@ Declared license: other
 
 Attribution: Exgentic team; General Machines (Pratham Bhatnagar and Deepanshu Pal); Recursive Task Synthesis dataset publishers; Motif Technologies; Maximus Adeola and Pi session contributors; Thoughtworks and its upstream SWE-smith, Nebius, and Kwaipilot contributors.
 Modifications: sampled sessions; schema conversion; opaque IDs; common privacy-pattern redaction; tokenizer estimates explicitly marked where needed. No new model execution was performed.
-The original source README and available notice files are retained by the organizer. Source code/product content keeps its upstream terms. Exgentic v2 has no declared licence; Pi and Thoughtworks have per-source terms.
+Consult the upstream source README and notice files for the full terms. Source code/product content keeps its upstream terms. Exgentic v2 has no declared licence; Pi and Thoughtworks have per-source terms.

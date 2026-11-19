@@ -8,11 +8,11 @@ from urllib.parse import urlsplit
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--output", default="output")
+    p.add_argument("--output", help="Results directory; defaults to the bundled synthetic demo")
     p.add_argument("--port", type=int, default=8765)
     a = p.parse_args()
     code = Path(__file__).resolve().parent
-    output = Path(a.output).resolve()
+    output = Path(a.output).resolve() if a.output else code.parent / "demo"
     routes = {
         "/": code / "viewer.html",
         "/viewer.html": code / "viewer.html",

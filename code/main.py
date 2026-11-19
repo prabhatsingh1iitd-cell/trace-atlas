@@ -36,7 +36,7 @@ async def run(args):
     if args.stage == "export":
         from reporting import export
 
-        export(traces, manifest, cache, args.output, args.student_id)
+        export(traces, manifest, cache, args.output, args.project_name)
         return
     if not (cache / "glm_capabilities.json").exists():
         await probe(cache)
@@ -64,7 +64,7 @@ async def run(args):
             await build_profiles(traces, taxonomy, assignments, cache, glm)
         from reporting import export
 
-        export(traces, manifest, cache, args.output, args.student_id)
+        export(traces, manifest, cache, args.output, args.project_name)
     finally:
         atomic_json(cache / "last_request_stats.json", glm.stats)
         print(dumps({"phase": "api_stats", **glm.stats}), flush=True)
@@ -90,7 +90,7 @@ if __name__ == "__main__":
         ],
     )
     p.add_argument("--dataset", required=True)
-    p.add_argument("--student-id", required=True)
+    p.add_argument("--project-name", default="Trace Atlas", help="Display name for the exported analysis")
     p.add_argument("--cache", default="cache")
     p.add_argument("--output", default="output")
     p.add_argument("--concurrency", type=int, default=3)

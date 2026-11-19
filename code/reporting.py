@@ -14,7 +14,7 @@ NOTES = [
     "estimated_cl100k_base counters are supplied tokenizer estimates over serialized conversations, excluding provider chat templates and separate tool-schema overhead. They are not API charges. No new token estimates or dollar costs are invented.",
     "source_reported counts are historical telemetry, not verified invoices. Input counters for converted Claude/Pi calls already include cache reads and creation; these components are not added again.",
     "Missing per-call usage stays unknown. source_reported_session_usage is shown separately as a diagnostic and is not added to per-call totals or allocated across calls.",
-    "Public-source assessment traces may be synthetic or benchmark traffic. Categories describe supported purposes, not verified production business adoption or successful outcomes.",
+    "Imported traces may be synthetic or benchmark traffic. Categories describe supported purposes, not verified production business adoption or successful outcomes.",
     "Classification uses bounded excerpts; omission and same-model semantic error remain possible. Confidence is qualitative and same-model audit agreement is not independent accuracy.",
     "Only hyde/glm-5.3-flash performs semantic inference. TF-IDF and mini-batch clustering select a diverse discovery sample; bulk assignments are direct GLM judgments, without label propagation.",
 ]
@@ -89,7 +89,7 @@ def examples_for(members, traces, assignments):
     return result
 
 
-def export(traces, manifest, cache, output, student_id):
+def export(traces, manifest, cache, output, project_name):
     cache = Path(cache)
     out = Path(output)
     out.mkdir(parents=True, exist_ok=True)
@@ -197,7 +197,7 @@ def export(traces, manifest, cache, output, student_id):
         if (cache / "refinement.json").exists()
         else None
     )
-    # Summarize only completed successful requests; raw requests stay outside submission.
+    # Summarize only completed successful requests; raw requests stay outside public exports.
     request_usage = {"request_count": 0, "input_tokens": 0, "output_tokens": 0}
     for path in (cache / "requests").glob("*.json"):
         r = read_json(path)
@@ -238,9 +238,8 @@ def export(traces, manifest, cache, output, student_id):
         },
     ]
     results = {
-        "schema_version": "1.0",
-        "student_id": student_id,
-        "variant": "02",
+        "schema_version": "1.1",
+        "project_name": project_name,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source": {
             "filename": "traces.parquet",

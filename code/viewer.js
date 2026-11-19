@@ -87,7 +87,10 @@ function renderAll() {
     notice(
       "Processing snapshot: record coverage and usage totals are complete; semantic inference is still in progress. Pending and failed cases are explicitly unresolved.",
     );
-  $("#identity").textContent = `${r.student_id} · V${r.variant}`;
+  $("#identity").textContent = r.project_name || "Trace Atlas";
+  $("#analysis-mode").textContent = r.demo ? "Synthetic demo · no model calls" : "Evidence-linked analysis";
+  if (r.demo) notice("Synthetic demo: fictional traces, hand-authored labels and illustrative token counters. No customer data or model inference is included.");
+  else if (state.quality?.status !== "incomplete") notice("");
   $("#footer-status").textContent =
     `${fmt(r.summary.call_count)} calls · ${fmt(r.summary.trace_count)} traces · ${r.classification.taxonomy_version}`;
   const cards = [
@@ -681,7 +684,7 @@ function renderQuality() {
   const method = add(
     el("article", "panel quality-card"),
     el("h2", "", "Semantic method"),
-    qualityRow("Permitted model", r.classification.model),
+    qualityRow("Analysis method", r.classification.model),
     qualityRow(
       "Discovery sample",
       `${fmt(r.classification.discovery_trace_count)} traces`,
@@ -705,13 +708,18 @@ function renderQuality() {
     el("h2", "", "How the hierarchy was built"),
   );
   const ol = el("ol");
-  for (const text of [
+  for (const text of (r.demo ? [
+    "Load fictional traces authored specifically for this public demo.",
+    "Apply hand-authored workflow labels, including one intentionally unresolved trace.",
+    "Compute counts, token rollups and distributions using the same exporter as real analyses.",
+    "Validate trace IDs, call order, examples and accounting totals; no model accuracy is measured."
+  ] : [
     "Reconstruct each source trace using trace_id and call_index.",
     "Sample diverse, high-usage, and uncertain traces using local statistical features.",
-    "Ask the permitted GLM to discover and consolidate purpose/workflow definitions.",
+    "Ask GLM to discover and consolidate purpose/workflow definitions.",
     "Classify each trace directly, then audit a targeted sample with expanded evidence.",
     "Roll up all source counters with deterministic code; validate IDs and sums.",
-  ])
+  ]))
     ol.append(el("li", "", text));
   add(steps, ol);
   const notes = add(

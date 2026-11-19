@@ -164,7 +164,7 @@ def tool_names(value):
 
 def excerpt(text, limit=240):
     text = re.sub(r"\s+", " ", text).strip()
-    # Additional conservative redaction for submitted examples.
+    # Additional conservative redaction for exported examples.
     text = re.sub(
         r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b", "[EMAIL]", text
     )

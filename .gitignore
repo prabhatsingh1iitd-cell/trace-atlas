@@ -10,7 +10,12 @@ cache/
 logs/
 staging/
 *.zip
-Hyde_AI_Hiring_Dataset_02/
-SAMPLE_STUDENT_V01/
+/*Dataset*/
+/SAMPLE_*/
 
 .ruff_cache/
+
+# Private source material and local exports
+/output/
+/chat.md
+.DS_Store
