@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+data/
+.cache/
+cache/
+logs/
+staging/
+*.zip
+Hyde_AI_Hiring_Dataset_02/
+SAMPLE_STUDENT_V01/
+
+.ruff_cache/

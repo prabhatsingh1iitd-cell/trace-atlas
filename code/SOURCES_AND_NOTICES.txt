@@ -1,0 +1,37 @@
+PUBLIC DATA SOURCES AND NOTICES
+Derived assessment data; sources are not necessarily production traffic.
+Some upstream permissions are unresolved. This local build is for organizer review; do not redistribute until those source permissions are resolved.
+
+Exgentic/agent-llm-traces-v2
+https://huggingface.co/datasets/Exgentic/agent-llm-traces-v2
+Revision: ccd4c607cb708b4bb9e043bdc63a9013df35a9bc
+Declared license: not declared
+
+generalmachines/CartTrace-100k
+https://huggingface.co/datasets/generalmachines/CartTrace-100k
+Revision: 86cab5e539e161e0915d78d8abdd9023f09b411e
+Declared license: cc-by-4.0
+
+Zhongzhi1228/Recursive-Task-Synthesis-Trajectories
+https://huggingface.co/datasets/Zhongzhi1228/Recursive-Task-Synthesis-Trajectories
+Revision: 2ec62e6cbbc9e6b014d016ffc31bf266049326fa
+Declared license: cc-by-4.0
+
+Motif-Technologies/agenttracer
+https://huggingface.co/datasets/Motif-Technologies/agenttracer
+Revision: 9f1865b1a794389e3846b834357b4ea2497f96c8
+Declared license: ['apache-2.0', 'mit', 'bsd-3-clause']
+
+MaxDevv/real-pi-coding-agent-traces-sessions
+https://huggingface.co/datasets/MaxDevv/real-pi-coding-agent-traces-sessions
+Revision: 8c593252ddad7dca08a0afc07896195fa73f2d6e
+Declared license: other
+
+thoughtworks/agentic-coding-trajectories
+https://huggingface.co/datasets/thoughtworks/agentic-coding-trajectories
+Revision: cef72d1f4d0caabf85937adf8337a14b7522c782
+Declared license: other
+
+Attribution: Exgentic team; General Machines (Pratham Bhatnagar and Deepanshu Pal); Recursive Task Synthesis dataset publishers; Motif Technologies; Maximus Adeola and Pi session contributors; Thoughtworks and its upstream SWE-smith, Nebius, and Kwaipilot contributors.
+Modifications: sampled sessions; schema conversion; opaque IDs; common privacy-pattern redaction; tokenizer estimates explicitly marked where needed. No new model execution was performed.
+The original source README and available notice files are retained by the organizer. Source code/product content keeps its upstream terms. Exgentic v2 has no declared licence; Pi and Thoughtworks have per-source terms.

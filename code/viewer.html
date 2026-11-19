@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Trace Atlas · Hyde AI</title>
+    <link rel="stylesheet" href="viewer.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="#overview"
+        ><span class="mark">H</span
+        ><span>HYDE<span class="brand-sub">TRACE ATLAS</span></span></a
+      >
+      <div class="nav-label">EXPLORER</div>
+      <nav>
+        <button class="nav active" data-tab="overview">
+          <span>◈</span> Overview</button
+        ><button class="nav" data-tab="hierarchy">
+          <span>⌘</span> Use cases & workflows</button
+        ><button class="nav" data-tab="usage"><span>▥</span> Usage lab</button
+        ><button class="nav" data-tab="traces">
+          <span>≡</span> Trace explorer</button
+        ><button class="nav" data-tab="quality">
+          <span>◎</span> Method & quality
+        </button>
+      </nav>
+      <div class="sidebar-foot">
+        <span class="live-dot"></span> Local, private explorer
+        <p>
+          Saved results. No model calls.<br />No external assets or analytics.
+        </p>
+        <label class="load-btn"
+          >Open result files<input
+            id="files"
+            type="file"
+            multiple
+            accept=".json,.jsonl" /></label
+        ><small
+          >Select results.json and optionally<br />trace_assignments.jsonl.</small
+        >
+      </div>
+    </aside>
+    <div class="main">
+      <header>
+        <div class="breadcrumb">
+          Assessment intelligence <span>/</span> <b>Variant 02</b>
+        </div>
+        <div class="header-actions">
+          <button id="download-results" class="download-button" disabled>
+            Download JSON ↓
+          </button>
+          <div id="identity" class="identity">Loading results…</div>
+        </div>
+      </header>
+      <div id="notice" class="notice" hidden></div>
+      <main>
+        <section id="overview" class="tab active">
+          <div class="heading">
+            <div>
+              <div class="eyebrow">THE BIG PICTURE</div>
+              <h1>A map of AI work.</h1>
+              <p class="intro">
+                Follow the purpose behind every trace. See where recorded tokens
+                go.
+              </p>
+            </div>
+            <span class="tag">GLM-only inference</span>
+          </div>
+          <div id="overview-meta" class="overview-meta"></div>
+          <div class="metrics" id="metrics"></div>
+          <div class="overview-grid">
+            <article class="panel distribution">
+              <div class="panel-head">
+                <div>
+                  <h2>Where usage concentrates</h2>
+                  <p>Business use cases, ranked by your selected measure.</p>
+                </div>
+                <div class="segmented">
+                  <button class="selected" data-measure="tokens">
+                    Recorded tokens</button
+                  ><button data-measure="calls">Calls</button>
+                </div>
+              </div>
+              <div id="distribution"></div>
+              <div class="footnote" id="denominator"></div>
+            </article>
+            <article class="panel coverage">
+              <div class="panel-head">
+                <div>
+                  <h2>Know what is known</h2>
+                  <p>Usage provenance across all calls.</p>
+                </div>
+              </div>
+              <div class="coverage-total" id="coverage-total">—</div>
+              <div id="coverage-bar" class="coverage-bar"></div>
+              <div id="coverage-legend"></div>
+              <div class="rule"></div>
+              <div class="small-label">CLASSIFICATION COVERAGE</div>
+              <div id="classification-coverage"></div>
+              <p class="footnote">
+                Recorded, estimated, and unknown usage stay separate. Token
+                shares exclude estimates.
+              </p>
+            </article>
+          </div>
+          <div class="insights" id="insights"></div>
+          <div class="section-link">
+            <span>Every total connects to its underlying traces.</span
+            ><button class="text-button" data-go="hierarchy">
+              Explore the hierarchy →
+            </button>
+          </div>
+        </section>
+
+        <section id="hierarchy" class="tab">
+          <div class="heading">
+            <div>
+              <div class="eyebrow">PURPOSE → PROCESS → EVIDENCE</div>
+              <h1>Inside the hierarchy.</h1>
+              <p class="intro">
+                Choose a business objective, then inspect its workflows and
+                examples.
+              </p>
+            </div>
+          </div>
+          <div class="hierarchy-grid">
+            <div id="case-list" class="case-list"></div>
+            <div id="case-detail"></div>
+          </div>
+        </section>
+
+        <section id="usage" class="tab">
+          <div class="heading">
+            <div>
+              <div class="eyebrow">DISTRIBUTIONS & EXPLICIT ASSUMPTIONS</div>
+              <h1>Look beyond volume.</h1>
+              <p class="intro">
+                Compare recorded usage fairly. Explore a hypothetical
+                input-reduction scenario.
+              </p>
+            </div>
+          </div>
+          <div class="panel lab-table">
+            <div class="panel-head">
+              <div>
+                <h2>Workflow token intensity</h2>
+                <p>
+                  Only calls with both source-reported counters enter the median
+                  and P90.
+                </p>
+              </div>
+              <input
+                id="lab-search"
+                aria-label="Search usage workflows"
+                placeholder="Find a workflow…"
+              />
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Workflow</th>
+                    <th>Recorded sample</th>
+                    <th>Coverage</th>
+                    <th>Median / call</th>
+                    <th>P90 / call</th>
+                    <th>Recorded share</th>
+                  </tr>
+                </thead>
+                <tbody id="intensity-body"></tbody>
+              </table>
+            </div>
+            <div class="lab-note">
+              P90 is the value at or below which 90% of the sampled calls fall.
+              Compare coverage alongside intensity; missing and estimated usage
+              do not enter these statistics.
+            </div>
+          </div>
+          <div class="lab-grid">
+            <article class="panel scenario">
+              <div class="panel-head">
+                <div>
+                  <h2>Input-reduction sensitivity</h2>
+                  <p>
+                    A transparent what-if calculation, not measured savings.
+                  </p>
+                </div>
+                <span class="tag scenario-tag">HYPOTHETICAL</span>
+              </div>
+              <div class="lab-inner">
+                <label class="field-label" for="scenario-scope">Scope</label
+                ><select id="scenario-scope">
+                  <option value="">All use cases</option>
+                </select>
+                <div class="slider-label">
+                  <label for="reduction-slider">Assumed avoidable input</label
+                  ><strong id="reduction-label">10%</strong>
+                </div>
+                <input
+                  type="range"
+                  id="reduction-slider"
+                  min="0"
+                  max="30"
+                  value="10"
+                  step="1"
+                />
+                <div id="scenario-values"></div>
+                <p class="footnote">
+                  Assumes input can be safely reduced by the selected fraction
+                  with unchanged output and quality. No provider caching, price,
+                  invoice savings, or achievable reduction is inferred.
+                </p>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Recorded-token concentration</h2>
+                  <p>
+                    How much observed usage sits in the highest-usage traces?
+                  </p>
+                </div>
+              </div>
+              <div id="concentration" class="lab-inner"></div>
+              <p class="lab-note">
+                Trace counts use the full dataset. Shares use recorded tokens
+                only. Concentration identifies where to investigate; it does not
+                prove waste.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="traces" class="tab">
+          <div class="heading">
+            <div>
+              <div class="eyebrow">ORIGINAL RECORDS, PRESERVED</div>
+              <h1>Follow a trace.</h1>
+              <p class="intro">
+                One primary assignment per linked trace. Every constituent call
+                inherits it.
+              </p>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="trace-controls">
+              <input
+                id="search"
+                aria-label="Search traces"
+                placeholder="Search trace ID, use case, or workflow…"
+              /><select id="workflow-filter" aria-label="Filter workflow">
+                <option value="">All workflows</option></select
+              ><select id="confidence-filter" aria-label="Filter confidence">
+                <option value="">All confidence levels</option>
+                <option>high</option>
+                <option>medium</option>
+                <option>low</option>
+              </select>
+            </div>
+            <div class="trace-secondary">
+              <select id="status-filter" aria-label="Filter assignment status">
+                <option value="">All assignments</option>
+                <option value="unresolved">Unresolved only</option>
+                <option value="audited">Audit checked</option>
+                <option value="reviewed">
+                  Fuller-context reviewed
+                </option></select
+              ><select id="usage-filter" aria-label="Filter usage provenance">
+                <option value="">All usage provenance</option>
+                <option value="recorded">Has recorded usage</option>
+                <option value="estimated">Has estimates</option>
+                <option value="unknown">Has unknown usage</option></select
+              ><select id="sort-order" aria-label="Sort traces">
+                <option value="tokens">Sort: recorded tokens</option>
+                <option value="calls">Sort: call count</option>
+                <option value="input">Sort: recorded input</option>
+                <option value="output">Sort: recorded output</option>
+                <option value="id">Sort: original ID</option></select
+              ><button id="clear-filters" class="text-button">
+                Clear filters</button
+              ><button id="download-filtered" class="download-button">
+                Download filtered JSON ↓
+              </button>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Original trace ID</th>
+                    <th>Workflow</th>
+                    <th>Calls</th>
+                    <th>Recorded tokens</th>
+                    <th>Confidence</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="trace-body"></tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <span id="trace-count"></span>
+              <div>
+                <button id="previous">← Previous</button
+                ><span id="page-number"></span><button id="next">Next →</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="quality" class="tab">
+          <div class="heading">
+            <div>
+              <div class="eyebrow">METHOD & LIMITATIONS</div>
+              <h1>Built to be inspected.</h1>
+              <p class="intro">
+                The accounting is exact. Semantic judgments retain their
+                uncertainty.
+              </p>
+            </div>
+          </div>
+          <div id="quality-content"></div>
+        </section>
+        <footer>
+          <span>HYDE · TRACE MINING CHALLENGE</span
+          ><span id="footer-status">Variant 02</span>
+        </footer>
+      </main>
+    </div>
+    <dialog id="trace-dialog">
+      <div class="dialog-head">
+        <span class="eyebrow">TRACE DETAIL</span
+        ><button id="close-dialog" aria-label="Close trace detail">×</button>
+      </div>
+      <div id="trace-detail"></div>
+    </dialog>
+    <script src="viewer.js"></script>
+  </body>
+</html>
